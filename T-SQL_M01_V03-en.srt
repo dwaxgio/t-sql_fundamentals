@@ -1,0 +1,648 @@
+0
+00:00:02,060 --> 00:00:06,089
+Alright let&#39;s have a look at some basic select queries and then
+
+1
+00:00:06,089 --> 00:00:10,089
+understand how this works. I&#39;m in SQL Server Management Studio and 
+
+2
+00:00:10,089 --> 00:00:14,589
+I&#39;ve connected to my Azure SQL Database. And what I&#39;m going to do is I&#39;m going to
+
+3
+00:00:14,589 --> 00:00:15,809
+create a new query, 
+
+4
+00:00:15,809 --> 00:00:19,039
+I&#39;m clicking the New Query button. And I get this window appearing here
+
+5
+00:00:19,039 --> 00:00:23,180
+into which I can start typing my Transact-SQL. Now before I type
+
+6
+00:00:23,180 --> 00:00:24,510
+any Transact-SQL code, 
+
+7
+00:00:24,510 --> 00:00:28,230
+I just want to notice which database I&#39;m in. We talk about the database context
+
+8
+00:00:28,230 --> 00:00:29,130
+as being 
+
+9
+00:00:29,130 --> 00:00:32,290
+the database the you&#39;re currently working in or that you&#39;re currently connected
+
+10
+00:00:32,290 --> 00:00:32,660
+to.
+
+11
+00:00:32,659 --> 00:00:36,170
+And you can see that by default it is connected me to a database called master
+
+12
+00:00:36,170 --> 00:00:40,280
+which is a system database this used internally by the system.
+
+13
+00:00:40,280 --> 00:00:43,379
+I actually want to be working in the AdventureWorks database or the
+
+14
+00:00:43,379 --> 00:00:43,950
+AdventureWorksLT
+
+15
+00:00:43,950 --> 00:00:47,219
+database. So I&#39;ll go ahead and select that.
+
+16
+00:00:47,219 --> 00:00:51,149
+And I&#39;ll guarantee you, when you&#39;re working on the labs at some point you&#39;ll find
+
+17
+00:00:51,149 --> 00:00:54,170
+yourself in the wrong database and you&#39;ll get an error that says
+
+18
+00:00:54,170 --> 00:00:58,920
+an object couldn&#39;t be found or something like that. Just double check that
+
+19
+00:00:58,920 --> 00:01:00,489
+you&#39;re working in the right database, 
+
+20
+00:01:00,489 --> 00:01:04,400
+as a little tip. So know that I&#39;m there, I&#39;m going to
+
+21
+00:01:04,400 --> 00:01:09,080
+go ahead and start executing some Transact-SQL. So I&#39;ll use my SELECT statement
+
+22
+00:01:09,080 --> 00:01:14,380
+and I&#39;ll just a go with every programmers friend 
+
+23
+00:01:14,380 --> 00:01:18,910
+the first program everybody ever writes. Here&#39;s the Transact-SQL version of Hello World 
+
+24
+00:01:18,910 --> 00:01:23,760
+or hello Graeme in this case. If I select that, back it comes. It&#39;s one column
+
+25
+00:01:23,760 --> 00:01:24,420
+and it&#39;s got the
+
+26
+00:01:24,420 --> 00:01:27,720
+the literal string that I typed in there. So
+
+27
+00:01:27,720 --> 00:01:30,980
+it&#39;s not particularly very useful but it does at least show me that might my SELECT
+
+28
+00:01:30,980 --> 00:01:33,510
+statement is working, it&#39;s bringing back that literal value. 
+
+29
+00:01:33,510 --> 00:01:37,410
+What I probably want to do though is to get some data from
+
+30
+00:01:37,410 --> 00:01:41,200
+some tables in the database. So I&#39;m going to SELECT *
+
+31
+00:01:41,200 --> 00:01:45,580
+FROM SalesLT.Product
+
+32
+00:01:45,580 --> 00:01:49,110
+Now let&#39;s just take a look at that for a second.
+
+33
+00:01:49,110 --> 00:01:52,880
+SalesLT is the schema. You might remember we talked about tables belonging
+
+34
+00:01:52,880 --> 00:01:53,660
+to a schema.
+
+35
+00:01:53,660 --> 00:01:58,300
+And Product is the name of the table. And the SELECT * means
+
+36
+00:01:58,300 --> 00:02:03,110
+bring back all the columns. I&#39;m not specific about which columns I want,
+
+37
+00:02:03,110 --> 00:02:05,090
+I want to see all the columns in this table. 
+
+38
+00:02:05,090 --> 00:02:08,729
+And I&#39;ll go ahead and I&#39;ll execute that code.
+
+39
+00:02:08,729 --> 00:02:13,520
+And sure enough it brings back a huge big results set with
+
+40
+00:02:13,520 --> 00:02:16,780
+data for all the columns that are in that table. So
+
+41
+00:02:16,780 --> 00:02:20,900
+I&#39;ve got 295 rows there. I can see down here in the corner
+
+42
+00:02:20,900 --> 00:02:24,620
+and I&#39;ve got all these columns across here including columns that I probably
+
+43
+00:02:24,620 --> 00:02:27,880
+don&#39;t really need. I won&#39;t really need that rowguid column or the
+
+44
+00:02:27,880 --> 00:02:31,690
+ThumbnailPhotoFileName or any of these kind of things as I&#39;m working with it.
+
+45
+00:02:31,690 --> 00:02:36,180
+So that brings us to our first kind of best practice when you&#39;re working with 
+
+46
+00:02:36,180 --> 00:02:37,040
+Transact-SQL
+
+47
+00:02:37,040 --> 00:02:41,040
+and that is only bring back what you need. Try and avoid using SELECT *
+
+48
+00:02:41,040 --> 00:02:44,350
+and explicitly saying which
+
+49
+00:02:44,350 --> 00:02:47,940
+of the columns you&#39;re interested in. So in this case, I&#39;m interested and
+
+50
+00:02:47,940 --> 00:02:52,160
+ProductID, the Name, the
+
+51
+00:02:52,160 --> 00:02:57,440
+ListPrice, and the StandardCost.
+
+52
+00:02:57,440 --> 00:03:01,430
+Now, I could leave all that on one line like that,
+
+53
+00:03:01,430 --> 00:03:04,240
+it doesn&#39;t really make any difference if you put a new line. I could
+
+54
+00:03:04,240 --> 00:03:06,320
+put a whole bunch of new lines in there or
+
+55
+00:03:06,320 --> 00:03:09,350
+space it out anyway I like. The
+
+56
+00:03:09,350 --> 00:03:12,530
+indicator that the end of the statement has been reached is this
+
+57
+00:03:12,530 --> 00:03:17,000
+semi-colon at the end. And now technically that&#39;s optional 
+
+58
+00:03:17,000 --> 00:03:20,230
+in the current releases of SQL Server and Azure SQL Database
+
+59
+00:03:20,230 --> 00:03:23,550
+but is good practice to put a semi-colon at the end of the statement just to
+
+60
+00:03:23,550 --> 00:03:27,510
+be clear about that defines the entire statement that I want to
+
+61
+00:03:27,510 --> 00:03:27,890
+run.
+
+62
+00:03:27,890 --> 00:03:31,330
+So if I go ahead and Execute that,
+
+63
+00:03:31,330 --> 00:03:34,750
+I get back those four columns that I specified. I get back
+
+64
+00:03:34,750 --> 00:03:37,970
+my ID, my name, my ListPrice, and my StandardCosts. 
+
+65
+00:03:37,970 --> 00:03:43,600
+So far so good. Now what I might also want to do is I might want to bring
+
+66
+00:03:43,600 --> 00:03:44,230
+back
+
+67
+00:03:44,230 --> 00:03:48,550
+the ListPrice minus the StandardCost.
+
+68
+00:03:48,550 --> 00:03:53,250
+So it&#39;s not a column, it&#39;s an expression. It&#39;s
+
+69
+00:03:53,250 --> 00:03:56,450
+a calculation that I want the the system to perform for me.
+
+70
+00:03:56,450 --> 00:04:00,740
+So if I go ahead and and run that, it works. It brings back the
+
+71
+00:04:00,740 --> 00:04:03,770
+ListPrice minus the StandardCosts, so I can see that there.
+
+72
+00:04:03,770 --> 00:04:07,920
+But of course there&#39;s no column name here because it doesn&#39;t know what to call that column.
+
+73
+00:04:07,920 --> 00:04:09,270
+It&#39;s not defined in the table,
+
+74
+00:04:09,270 --> 00:04:13,709
+so it doesn&#39;t have a name. So what we&#39;ll want to do is actually give it some sort
+
+75
+00:04:13,709 --> 00:04:15,320
+of meaningful name.
+
+76
+00:04:15,320 --> 00:04:21,200
+And I do that by saying as and then the name I want to assign to it.
+
+77
+00:04:21,200 --> 00:04:23,280
+And sure enough it now comes back as a column
+
+78
+00:04:23,280 --> 00:04:28,870
+named Margin which is pretty useful. Now there is an alternative syntax that I could use. You don&#39;t
+
+79
+00:04:28,870 --> 00:04:30,650
+actually have to use as.
+
+80
+00:04:30,650 --> 00:04:34,530
+If I omit the as, it will still work if I go ahead and run that
+
+81
+00:04:34,530 --> 00:04:37,710
+it still comes by being called Margin. So
+
+82
+00:04:37,710 --> 00:04:41,350
+you don&#39;t need the as. And if you&#39;re particularly lazy you might think that&#39;s
+
+83
+00:04:41,350 --> 00:04:44,240
+fine, that&#39;ll save me typing two characters, I won&#39;t bother
+
+84
+00:04:44,240 --> 00:04:48,130
+having that. The problem is it&#39;s very easy
+
+85
+00:04:48,130 --> 00:04:52,440
+to type a query perhaps you know in this case I want the color
+
+86
+00:04:52,440 --> 00:04:55,530
+to come back. But I&#39;ve forgotton to type in a comma
+
+87
+00:04:55,530 --> 00:05:00,840
+to separate that out. And if I do that, what I actually get in this case is the ListPrice
+
+88
+00:05:00,840 --> 00:05:02,560
+minus the StandardCost
+
+89
+00:05:02,560 --> 00:05:06,420
+in a column called Color which doesn&#39;t make any sense whatsoever. And it&#39;s
+
+90
+00:05:06,420 --> 00:05:08,260
+because I forgot to put in that
+
+91
+00:05:08,260 --> 00:05:11,800
+missing comma. That&#39;s not actually what I wanted.
+
+92
+00:05:11,800 --> 00:05:15,010
+So my second tip is
+
+93
+00:05:15,010 --> 00:05:19,400
+make sure you always use the as
+
+94
+00:05:19,400 --> 00:05:23,230
+keyword when you&#39;re assigning an alias to a column so that we know that we&#39;re
+
+95
+00:05:23,230 --> 00:05:23,980
+getting the
+
+96
+00:05:23,980 --> 00:05:27,430
+the proper name. And you can assign aliases to any column. It doesn&#39;t have to be
+
+97
+00:05:27,430 --> 00:05:31,190
+ones that have got expressions, if I just want to call StandardCost
+
+98
+00:05:31,190 --> 00:05:36,680
+Cost I could do that as well. And you can see that it works. So these aliases, they&#39;re just ways of 
+
+99
+00:05:36,680 --> 00:05:38,140
+renaming columns
+
+100
+00:05:38,140 --> 00:05:41,800
+or assigning names to columns that are defined by
+
+101
+00:05:41,800 --> 00:05:44,860
+calculations or  expressions that that wouldn&#39;t otherwise have a name.
+
+102
+00:05:44,860 --> 00:05:49,750
+Okay so we&#39;re getting some data out of here. We&#39;re seeing some of the
+
+103
+00:05:49,750 --> 00:05:51,820
+syntax and tricks that we can use with it.
+
+104
+00:05:51,820 --> 00:05:55,880
+And let&#39;s explore a little bit more this idea using expressions. And we&#39;ve
+
+105
+00:05:55,880 --> 00:05:56,360
+seen
+
+106
+00:05:56,360 --> 00:06:00,880
+we did ListPrice minus StandardCost. Now let&#39;s try something else. Let&#39;s
+
+107
+00:06:00,880 --> 00:06:01,310
+ 
+
+108
+00:06:01,310 --> 00:06:05,990
+get rid of our costs and our prices and start to think about the color
+
+109
+00:06:05,990 --> 00:06:11,110
+and also the size. So we can start off by looking at the ProductID, the Name, the
+
+110
+00:06:11,110 --> 00:06:12,600
+Color, and the Size.
+
+111
+00:06:12,600 --> 00:06:16,590
+And you can see that the colors are as you would expect different
+
+112
+00:06:16,590 --> 00:06:19,840
+colors. The sizes are some of them are numbers
+
+113
+00:06:19,840 --> 00:06:24,260
+some of them are letters or character data, and some of them are null. So some
+
+114
+00:06:24,260 --> 00:06:26,800
+of the sizes are unknown or are not relevant or
+
+115
+00:06:26,800 --> 00:06:30,990
+or just missing. So what happens if
+
+116
+00:06:30,990 --> 00:06:34,729
+I tell it that I want Color
+
+117
+00:06:34,729 --> 00:06:39,860
+plus Size. So let&#39;s 
+
+118
+00:06:39,860 --> 00:06:43,789
+go-ahead run that. And I get no column name as you would expect.
+
+119
+00:06:43,789 --> 00:06:48,330
+But I do actually get something happening here. I get Black58,
+
+120
+00:06:48,330 --> 00:06:51,449
+to the color was Black, the size was 58 and this
+
+121
+00:06:51,449 --> 00:06:55,419
+has been evaluated to be Black58. So it&#39;s not trying to 
+
+122
+00:06:55,419 --> 00:06:58,720
+add things together as you might expect with the plus sign. Because these are
+
+123
+00:06:58,720 --> 00:06:59,090
+both
+
+124
+00:06:59,090 --> 00:07:03,319
+character columns, these are both strings, what it&#39;s doing is it&#39;s concatenating them.
+
+125
+00:07:03,319 --> 00:07:07,580
+So I could give that a name, called as Style, 
+
+126
+00:07:07,580 --> 00:07:11,210
+and that&#39;s perhaps some way as defining my style as being some combination of the
+
+127
+00:07:11,210 --> 00:07:14,550
+the color and size. But you&#39;ll notice that
+
+128
+00:07:14,550 --> 00:07:19,460
+where the size is null, what I don&#39;t get, I might expect to get
+
+129
+00:07:19,460 --> 00:07:22,699
+you know Red with without any size here. But I actually get null.
+
+130
+00:07:22,699 --> 00:07:26,729
+And that&#39;s because of the way that nulls behave. Null means
+
+131
+00:07:26,729 --> 00:07:31,259
+unknown. Null means I don&#39;t know what the value is here. So
+
+132
+00:07:31,259 --> 00:07:34,319
+Red plus something I don&#39;t know
+
+133
+00:07:34,319 --> 00:07:37,900
+equals something that I don&#39;t know. It&#39;s an unknown answer.
+
+134
+00:07:37,900 --> 00:07:40,930
+So what we get is a null. It doesn&#39;t treat a null as being a blank
+
+135
+00:07:40,930 --> 00:07:43,310
+string or empty column. It treats it as being
+
+136
+00:07:43,310 --> 00:07:46,460
+unknown value. So when you add, or you
+
+137
+00:07:46,460 --> 00:07:50,550
+subtract, or you do any sort of a calculation or any sort of expression
+
+138
+00:07:50,550 --> 00:07:51,509
+that uses a null, it
+
+139
+00:07:51,509 --> 00:07:56,469
+usually then evaluates to null if any one of the two things that
+
+140
+00:07:56,469 --> 00:07:57,639
+you working with is a null.
+
+141
+00:07:57,639 --> 00:08:02,389
+So that&#39;s worth being aware of as well. And then one final thing that&#39;s worth being aware
+
+142
+00:08:02,389 --> 00:08:06,229
+as well, I&#39;ve got the color and the size and some of the sizes are in fact
+
+143
+00:08:06,229 --> 00:08:06,909
+numbers.
+
+144
+00:08:06,909 --> 00:08:10,240
+So you might think that it&#39;s possible to do
+
+145
+00:08:10,240 --> 00:08:13,599
+something like this. It doesn&#39;t make much sense, but I might say
+
+146
+00:08:13,599 --> 00:08:16,650
+show me the ListPrice plus the Size.
+
+147
+00:08:16,650 --> 00:08:21,199
+And let&#39;s see what&#39;s going to happen there. And what&#39;s actually going to happen there is that I&#39;m 
+
+148
+00:08:21,199 --> 00:08:22,330
+going to get an error.
+
+149
+00:08:22,330 --> 00:08:26,300
+And the error is well, I can&#39;t do that because you&#39;re trying to do an operation
+
+150
+00:08:26,300 --> 00:08:29,969
+has a numerical value in the ListPrice
+
+151
+00:08:29,969 --> 00:08:33,680
+and a text value in the size column. So
+
+152
+00:08:33,679 --> 00:08:36,880
+it doesn&#39;t add it together where it is a number. It just says no these these two things
+
+153
+00:08:36,880 --> 00:08:38,150
+are incompatible, you can&#39;t
+
+154
+00:08:38,150 --> 00:08:42,370
+do that. You can&#39;t add a number to a  string. I don&#39;t know what it is you want
+
+155
+00:08:42,370 --> 00:08:43,350
+to try and do here
+
+156
+00:08:43,350 --> 00:08:47,460
+so I&#39;m going to give you an error that says I can&#39;t convert it to the appropriate
+
+157
+00:08:47,460 --> 00:08:51,740
+data type. It&#39;s actually a money data type, the ListPrice. So
+
+158
+00:08:51,740 --> 00:08:55,940
+we&#39;ve seen some examples of how to use Transact-SQL, and how to create some queries
+
+159
+00:08:55,940 --> 00:08:59,050
+and we&#39;ve also set ourselves up to look at some the
+
+160
+00:08:59,050 --> 00:09:02,310
+potential pitfalls, potential little problems that we might run across
+
+161
+00:09:02,310 --> 00:09:04,310
+which we&#39;ll explore in some of the later demos.
+
